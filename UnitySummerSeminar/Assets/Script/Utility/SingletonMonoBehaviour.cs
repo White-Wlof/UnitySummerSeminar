@@ -1,49 +1,50 @@
 ﻿using System;
 using UnityEngine;
 
-namespace AvoidRevolution.Utility
+namespace TUMU.Utility
 {
-	public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
-	{
-		private static T instance;
-		public static T Instance
-		{
-			get
-			{
-				if (instance == null)
-				{
-					Type t = typeof(T);
+    public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
+    {
+        private static T instance;
 
-					instance = (T)FindObjectOfType(t);
-					if (instance == null)
-					{
-						Debug.LogError(t + " をアタッチしているGameObjectはありません");
-					}
-				}
+        public static T Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    Type t = typeof(T);
 
-				return instance;
-			}
-		}
+                    instance = (T)FindObjectOfType(t);
+                    if (instance == null)
+                    {
+                        Debug.LogError(t + " をアタッチしているGameObjectはありません");
+                    }
+                }
 
-		virtual protected void Awake ()
-		{
-			// 他のGameObjectにアタッチされているか調べる.
-			// アタッチされている場合は破棄する.
-			if (this != Instance)
-			{
-				Destroy(this);
-				//Destroy(this.gameObject);
-				Debug.LogError(
-					typeof(T) +
-					" は既に他のGameObjectにアタッチされているため、コンポーネントを破棄しました." +
-					" アタッチされているGameObjectは " + Instance.gameObject.name + " です.");
-				return;
-			}
+                return instance;
+            }
+        }
 
-			// なんとかManager的なSceneを跨いでこのGameObjectを有効にしたい場合は
-			// ↓コメントアウト外してください.
-			//DontDestroyOnLoad(this.gameObject);
-		}
+        virtual protected void Awake()
+        {
+            // 他のGameObjectにアタッチされているか調べる.
+            // アタッチされている場合は破棄する.
+            if (this != Instance)
+            {
+                Destroy(this);
+                //Destroy(this.gameObject);
+                Debug.LogError(
+                    typeof(T) +
+                    " は既に他のGameObjectにアタッチされているため、コンポーネントを破棄しました." +
+                    " アタッチされているGameObjectは " + Instance.gameObject.name + " です.");
+                return;
+            }
 
-	}
+            // なんとかManager的なSceneを跨いでこのGameObjectを有効にしたい場合は
+            // ↓コメントアウト外してください.
+            //DontDestroyOnLoad(this.gameObject);
+        }
+
+    }
 }
